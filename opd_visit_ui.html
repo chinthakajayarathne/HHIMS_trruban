@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPD Visit - HHIMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Patient Header */
+        .patient-header {
+            background: linear-gradient(to bottom, #2c7a7b, #234e52);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .patient-info {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .patient-id {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Sub Header */
+        .sub-header {
+            background-color: #e8e8e8;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .sub-header h2 {
+            font-size: 14px;
+            font-weight: normal;
+            color: #333;
+        }
+
+        .autocomplete-btn {
+            background-color: #5a9;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .autocomplete-btn:hover {
+            background-color: #4a8;
+        }
+
+        /* Form Container */
+        .form-container {
+            padding: 20px 30px;
+        }
+
+        /* Form Row */
+        .form-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            width: 160px;
+            text-align: right;
+            padding-right: 15px;
+            padding-top: 8px;
+            color: #333;
+            font-size: 13px;
+        }
+
+        .form-label.required::before {
+            content: "*";
+            color: #c00;
+            margin-right: 2px;
+        }
+
+        .form-input {
+            flex: 1;
+        }
+
+        .form-input input[type="text"],
+        .form-input select,
+        .form-input textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .form-input input[type="text"]:focus,
+        .form-input select:focus,
+        .form-input textarea:focus {
+            outline: none;
+            border-color: #5a9;
+        }
+
+        .form-input input::placeholder,
+        .form-input textarea::placeholder {
+            color: #999;
+        }
+
+        .form-input select {
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .form-input textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Radio Buttons */
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-top: 8px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .radio-group input[type="radio"] {
+            cursor: pointer;
+        }
+
+        .radio-yes {
+            color: #c00;
+            font-weight: bold;
+        }
+
+        /* History Label with Icon */
+        .history-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .history-icon {
+            font-size: 16px;
+        }
+
+        /* Required Note */
+        .required-note {
+            color: #c00;
+            font-size: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn-save {
+            background-color: #337ab7;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-save:hover {
+            background-color: #286090;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+
+        /* Feature Buttons Grid */
+        .feature-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 0 20px 30px;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .feature-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            min-width: 140px;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .feature-btn:hover {
+            background-color: #1976D2;
+        }
+
+        .feature-btn.teal {
+            background-color: #26a69a;
+        }
+
+        .feature-btn.teal:hover {
+            background-color: #00897b;
+        }
+
+        /* Date display styling */
+        .date-display {
+            padding: 8px 12px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #333;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Patient Header -->
+        <div class="patient-header">
+            <div class="patient-info">
+                SANJANA NETHULI / Female / 8Y 5M 28D / WATTALA / 0758950792
+            </div>
+            <div class="patient-id">0180-417645-9</div>
+        </div>
+
+        <!-- Sub Header -->
+        <div class="sub-header">
+            <h2>OPD Visit</h2>
+            <button class="autocomplete-btn">
+                <span>🔒</span> Autocomplete Help
+            </button>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <!-- Date and Time -->
+            <div class="form-row">
+                <label class="form-label required">Date and time of visit</label>
+                <div class="form-input">
+                    <div class="date-display">2026-01-30 12:00:18</div>
+                </div>
+            </div>
+
+            <!-- Doctor -->
+            <div class="form-row">
+                <label class="form-label required">Doctor</label>
+                <div class="form-input">
+                    <select>
+                        <option value="dr_mohi">Dr.MOHI</option>
+                        <option value="dr_silva">Dr.Silva</option>
+                        <option value="dr_perera">Dr.Perera</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Visit Type -->
+            <div class="form-row">
+                <label class="form-label required">Visit Type</label>
+                <div class="form-input">
+                    <select>
+                        <option value="opd">OPD</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="followup">Follow-up</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Weight -->
+            <div class="form-row">
+                <label class="form-label">Weight in kg</label>
+                <div class="form-input">
+                    <input type="text" placeholder="Patient's weight in kilograms">
+                </div>
+            </div>
+
+            <!-- Complaint / Injury -->
+            <div class="form-row">
+                <label class="form-label required">Complaint / Injury</label>
+                <div class="form-input">
+                    <input type="text" placeholder="Complaint">
+                </div>
+            </div>
+
+            <!-- ILI -->
+            <div class="form-row">
+                <label class="form-label required">ILI</label>
+                <div class="form-input">
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="ili" value="yes">
+                            <span class="radio-yes">Yes</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="ili" value="no" checked>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cough -->
+            <div class="form-row">
+                <label class="form-label required">Cough</label>
+                <div class="form-input">
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="cough" value="yes">
+                            <span>Cough ->(2 weeks Presumptive TB)</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="cough" value="no" checked>
+                            <span>No Cough</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div class="form-row">
+                <label class="form-label">
+                    <span class="history-label">
+                        <span class="history-icon">📋</span>
+                        History
+                    </span>
+                </label>
+                <div class="form-input">
+                    <textarea placeholder="Hx of the presenting complaint"></textarea>
+                </div>
+            </div>
+
+            <!-- Required Note -->
+            <p class="required-note">*Fields marked with an asterisk must be filled</p>
+
+            <!-- Save/Cancel Buttons -->
+            <div class="action-buttons">
+                <button class="btn-save">Save</button>
+                <button class="btn-cancel">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Feature Buttons -->
+        <div class="feature-buttons">
+            <!-- Row 1 -->
+            <div class="button-row">
+                <button class="feature-btn">Lab Order</button>
+                <button class="feature-btn">Prescription</button>
+                <button class="feature-btn">Treatment</button>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="button-row">
+                <button class="feature-btn">Allergies</button>
+                <button class="feature-btn">PMHx</button>
+                <button class="feature-btn">Examination</button>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="button-row">
+                <button class="feature-btn">Give Injection</button>
+                <button class="feature-btn">Refer to Admission</button>
+                <button class="feature-btn">Refer to Clinic</button>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="button-row">
+                <button class="feature-btn teal">ECG</button>
+                <button class="feature-btn teal">Rabies</button>
+                <button class="feature-btn teal">Injury Surveillance</button>
+            </div>
+
+            <!-- Row 5 -->
+            <div class="button-row">
+                <button class="feature-btn teal">Refer to PCU/AS/JMO</button>
+                <button class="feature-btn teal">PACS</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
